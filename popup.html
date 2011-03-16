@@ -1,0 +1,82 @@
+<html>
+    <head>
+        <style>
+            body 
+            { 
+                min-width: 420px; 
+                overflow-x: hidden; 
+                font-family: Arial, sans-serif; 
+                font-size: 12px; 
+            }
+            input, textarea { width: 420px; }
+            input#save { font-weight: bold; width: auto; }
+        </style>
+        <script>
+            // This callback function is called when the content script has been 
+            // injected and returned its results
+            function onPageInfo(o) 
+            { 
+                document.getElementById("title").value = o.title; 
+                document.getElementById("url").value = o.url; 
+				document.getElementById("summary").value = o.summary;
+				document.getElementById("user").value = localStorage.send2egg_user;
+				document.getElementById("send2egg_url").value = localStorage.send2egg_url;
+            } 
+  
+            // POST the data to the server using XMLHttpRequest
+            function addBookmark(f)
+            {
+                var req = new XMLHttpRequest();
+            	req.open("POST", document.getElementById("send2egg_url").value, true);
+				localStorage.send2egg_user = document.getElementById("user").value;
+				localStorage.send2egg_url = document.getElementById("send2egg_url").value;
+            	
+            	var params = "title=" + document.getElementById("title").value + 
+							 "&user=" + document.getElementById("user").value + 
+							 "&pass=" + document.getElementById("pass").value + 
+							 "&summary=" + document.getElementById("summary").value +
+            				 "&url=" + document.getElementById("url").value.value +
+            				 "&send2egg_url=" + document.getElementById("send2egg_url").value;
+            	
+            	req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            	req.setRequestHeader("Content-length", params.length);
+            	req.setRequestHeader("Connection", "close");
+            	
+            	req.send(params);
+                
+                req.onreadystatechange = function() 
+                { 
+                    // If the request completed, close the extension popup
+                    if (req.readyState == 4)
+                        if (req.status == 200) window.close();
+                };
+                
+                return false;
+            }
+
+            // Call the getPageInfo function in the background page, passing in 
+            // our onPageInfo function as the callback
+            window.onload = function() 
+            { 
+                var bg = chrome.extension.getBackgroundPage();
+                bg.getPageInfo(onPageInfo);
+            }
+        </script>
+    </head>
+    <body>
+        <form id="addbookmark" onsubmit="addBookmark(this); return false;">
+			<p><label for="title">Your Nickname</label><br />
+        	<input type="text" id="user" name="user" size="20" value="" />
+			<p><label for="title">Title</label><br />
+        	<input type="text" id="title" name="title" size="50" value="" /></p>
+        	<p><label for="url">Url</label><br />
+        	<input type="text" id="url" name="url" size="50" value="" /></p>
+        	<p><label for="url">Summary</label><br />
+        	<input type="textbox" id="summary" name="summary" size="50" value="" /></p>
+        	<p><label for="url">URL to Send-to-Eggdrop.php</label><br />
+        	<input type="text" id="send2egg_url" name="send2egg_url" size="50" value="" /></p>
+			<input type="hidden" id="pass" name="pass" value="blerk" />
+			<p><input id="save" type="submit" value="Send to IRC" /></p>
+        </form>
+    </body>
+</html>

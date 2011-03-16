@@ -1,0 +1,27 @@
+{
+    "name": "Send to Eggdrop",
+    "description": "Send the URL and Title of the current page into an IRC channel via an Eggdrop bot at a click of a button.",
+    "permissions": [
+      "*://*/",
+      "tabs",
+      "contextMenus",
+      "unlimitedStorage",
+      "notifications"
+    ],
+    "browser_action": {
+        "default_title": "Send to Eggdrop",
+        "default_icon": "icon/16.png",
+        "popup": "popup.html"
+    },
+    "icons": {
+        "16": "icon/16.png",
+        "32": "icon/32.png",
+	"48": "icon/48.png",
+        "64": "icon/64.png",
+	"128": "icon/128.png",
+        "256": "icon/256.png"
+    },
+    "background_page": "background.html",
+    "options_page": "options.html",
+    "version": "0.0.3"
+}
