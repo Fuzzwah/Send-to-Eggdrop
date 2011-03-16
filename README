@@ -1,6 +1,7 @@
 Send to Eggdrop
+============
 
-Overview:
+### Overview ###
 
 An extension for Google Chrome which allows users to quickly and easily share a link to a 
 webpage or image with an IRC channel.
@@ -8,6 +9,47 @@ webpage or image with an IRC channel.
 This functionality passes the information about the URL via a php script to an Eggdrop IRC bot 
 which will announce to the channel who sent the link, the URL and the title.
 
-Requirements:
+### Installation ###
 
-An Eggdrop bot, a web server to host the middleman php script.
+There are 3 parts to this:
+
+1. A tcl script which needs a bit of config editing and installed on your eggdrop bot
+2. A php script which needs config and be placed in a world readable directory on your webserver
+3. The Chrome extension itself, will prompt for the required config options when you install it
+
+#### 1 ####
+
+Open up the Send-to-Eggdrop.tcl file in your favourite text editor. At the very top of the file you'll 
+see the following:
+
+~~~
+
+~~~
+
+Edit these options with the obvious things. Save the file into the scripts directory in your eggdrop 
+install path. Edit your eggdrop.conf and add the following line to the end of the file:
+
+~~~
+
+~~~
+
+Rehash (or just restart) your eggdrop bot.
+
+#### 2 ####
+
+Open up the Send-to-Eggdrop.php file. At the very top of the file you'll see the following:
+
+~~~
+$send2bot['botip'] = ""; // your bot's ip
+$send2bot['botport'] = ""; // the port which you configured in the tcl
+$send2bot['pass'] = ""; // the password which you configured in the tcl
+~~~
+
+Edit these with the obvious things (placing your settings inside the empty double quotes). Save this
+file somewhere world readable on your webserver.
+
+#### 3 ####
+
+Install the Send to Eggdrop extension for Chrome.
+
+`<more detail coming here as soon as I've compiled the extension>`
